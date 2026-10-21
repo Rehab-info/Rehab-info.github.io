@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import ArticleList from '../components/ArticleList.astro';
+import { getPublishedArticles } from '../lib/articles';
+import { SITE, url } from '../site';
+
+const articles = await getPublishedArticles();
+const latest = articles.slice(0, 5);
+---
+
+<Base>
+  <section class="hero">
+    <img class="banner" src={url('images/banner.png')} alt={SITE.name} width="1504" height="812" />
+    <h1>{SITE.tagline}</h1>
+    <p class="lead">{SITE.description}</p>
+  </section>
+
+  <h2 class="section-title">新着記事</h2>
+  <ArticleList articles={latest} />
+  {articles.length > 5 && <p><a href={url('articles/')}>記事一覧へ</a></p>}
+</Base>

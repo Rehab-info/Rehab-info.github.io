@@ -1,0 +1,60 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getPublishedArticles } from '../../lib/articles';
+import { formatDate, formatMonth } from '../../site';
+
+export async function getStaticPaths() {
+  const articles = await getPublishedArticles();
+  return articles.map((article) => ({
+    params: { slug: article.id },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+const d = article.data;
+---
+
+<Base title={d.title} description={d.description}>
+  <article>
+    <header class="article-header">
+      <div class="meta">
+        <span class="badge">{d.category}</span>
+        <span>公開 <time datetime={d.pubDate.toISOString()}>{formatDate(d.pubDate)}</time></span>
+        {d.updatedDate && (
+          <span>更新 <time datetime={d.updatedDate.toISOString()}>{formatDate(d.updatedDate)}</time></span>
+        )}
+      </div>
+      <h1>{d.title}</h1>
+      <p class="lead">{d.description}</p>
+      <p class="asof">
+        この記事は{formatMonth(d.asOf)}時点の情報です。制度は改定されることがあるため、実際の運用は出典の原文をご確認ください。
+      </p>
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    {d.sources.length > 0 && (
+      <section class="sources" aria-labelledby="sources-title">
+        <h2 id="sources-title">出典</h2>
+        <ol>
+          {d.sources.map((s) => (
+            <li>
+              <a href={s.url} rel="noopener" target="_blank">{s.title}</a>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )}
+
+    {d.tags.length > 0 && (
+      <ul class="tags" aria-label="タグ">
+        {d.tags.map((t) => <li>{t}</li>)}
+      </ul>
+    )}
+  </article>
+</Base>

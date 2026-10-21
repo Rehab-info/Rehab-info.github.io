@@ -1,0 +1,27 @@
+{
+  "name": "rehab-info",
+  "version": "0.1.0",
+  "description": "リハビリ専門職向け情報サイト",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro sync"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rehab-info/Rehab-info.github.io.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Rehab-info/Rehab-info.github.io/issues"
+  },
+  "homepage": "https://github.com/Rehab-info/Rehab-info.github.io#readme",
+  "dependencies": {
+    "astro": "^7.4.1"
+  },
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  }
+}

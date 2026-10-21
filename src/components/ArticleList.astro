@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatDate, url } from '../site';
+
+interface Props {
+  articles: CollectionEntry<'articles'>[];
+}
+
+const { articles } = Astro.props;
+---
+
+{
+  articles.length === 0 ? (
+    <p class="empty">まだ記事がありません。</p>
+  ) : (
+    <ul class="cards">
+      {articles.map((a) => (
+        <li class="card">
+          <div class="meta">
+            <span class="badge">{a.data.category}</span>
+            <time datetime={a.data.pubDate.toISOString()}>{formatDate(a.data.pubDate)}</time>
+          </div>
+          <a class="card-title" href={url(`articles/${a.id}/`)}>
+            {a.data.title}
+          </a>
+          <p>{a.data.description}</p>
+        </li>
+      ))}
+    </ul>
+  )
+}
